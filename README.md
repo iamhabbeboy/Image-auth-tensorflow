@@ -1,2 +1,3 @@
 # Image-auth-tensorflow
-Image Authentication with Tensor Flow using python flask
+Machine Learning Image Authentication with Tensor Flow using python flask
+
