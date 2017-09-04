@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+   <title> Image Authentication System </title>
+   <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-grid.min.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='vendor/font-awesome/css/font-awesome.min.css') }}">
+ </head>
+ <body>
+
+   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+   <a class="navbar-brand" href="#">Auth-Machine</a>
+   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+     <span class="navbar-toggler-icon"></span>
+   </button>
+
+   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+     <ul class="navbar-nav mr-auto">
+       <li class="nav-item active">
+         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+       </li>
+       <li class="nav-item">
+         <a class="nav-link" href="#">About Project </a>
+       </li>
+     </ul>
+   </div>
+ </nav>
+
+ <div class="container" style="margin-top: 100px;">
+  <div class="row">
+   <div class="col-8">
+      <h1 class="display-3"> Auth Machine </h1>
+      <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+      <hr class="my-4">
+      <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+      <p class="lead">
+        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+      </p>
+    </div>
+    <div class="col-4">
+       <h3> Login <small> / <a href="#">Create Account </a></small> </h3>
+      <div id="preview" style="height: 240px;">
+       <img src="{{url_for('static', filename='images/1.jpg')}}" border="0">
+      </div>
+       <div style="margin-top: 0px;">
+         <button class="btn btn-lg btn-outline-primary" id="click-upload"><i class="fa fa-cloud"></i> Choose File </button>
+         <button class="btn btn-lg btn-dark"><i class="fa fa-sign-in"></i>  Verify Login </button>
+       </div>
+       <form method="POST" action="/auth" enctype="multipart/form-data" id="fileAjax">
+         <input type="file" name="file" id="file" style="visibility:hidden">
+       </form>
+    </div>
+  </div>
+  <hr/>
+  <small><b>&copy; Copyright. 2017 </b></small>
+ </div>
+
+ <script src="{{ url_for('static', filename='plugin/jquery.1.11.js')}}"></script>
+ <script src="{{ url_for('static', filename='plugin/jquery.form.js')}}"></script>
+ <script>
+   $(function() {
+     $('#click-upload').click(function(){
+       $('#file').click();
+     });
+     $('#file').change(function(e) {
+       $('#preview').html('<center><br><img src="static/images/loading_transparent.gif" border="0"><p>please wait...</p></center>')
+      //  $('#fileAjax').ajaxForm({
+      //   target: '#preview'
+      //  }).submit();
+     })
+   })
+ </script>
+ </body>
+</html>
