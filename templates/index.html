@@ -44,7 +44,7 @@
       </div>
        <div style="margin-top: 0px;">
          <button class="btn btn-lg btn-outline-primary" id="click-upload"><i class="fa fa-cloud"></i> Choose File </button>
-         <button class="btn btn-lg btn-dark"><i class="fa fa-sign-in"></i>  Verify Login </button>
+         <a href="/register" class="btn btn-lg btn-dark"><i class="fa fa-sign-in"></i>  Register </a>
        </div>
        <form method="POST" action="/auth" enctype="multipart/form-data" id="fileAjax">
          <input type="file" name="file" id="file" style="visibility:hidden">
@@ -52,7 +52,7 @@
     </div>
   </div>
   <hr/>
-  <small><b>&copy; Copyright. 2017 </b></small>
+  <small><b>&copy; Copyright. 2019 </b></small>
  </div>
 
  <script src="{{ url_for('static', filename='plugin/jquery.1.11.js')}}"></script>
@@ -64,9 +64,9 @@
      });
      $('#file').change(function(e) {
        $('#preview').html('<center><br><img src="static/images/loading_transparent.gif" border="0"><p>please wait...</p></center>')
-      //  $('#fileAjax').ajaxForm({
-      //   target: '#preview'
-      //  }).submit();
+       $('#fileAjax').ajaxForm({
+        target: '#preview'
+       }).submit();
      })
    })
  </script>

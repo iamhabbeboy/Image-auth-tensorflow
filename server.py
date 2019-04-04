@@ -14,6 +14,10 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def index():
     return render_template("index.html")
 
+@app.route('/register', methods=['GET'])
+def register():
+    return render_template("register.html")
+
 @app.route('/auth', methods=['GET','POST'])
 def auth():
     if request.method == 'POST':
@@ -22,8 +26,8 @@ def auth():
         filename = secure_filename(files.filename)
         fullpath = os.path.dirname(os.path.realpath(__file__)) + '/static/public/'
         files.save(os.path.join(fullpath, filename))
-        #return "<img src='static/public/"+filename+"' border='0'>"
-        command = "cd tensorflow-for-poets-2 && python tf_files/label_image.py --image="+fullpath+"/"+filename+" --graph=tf_files/retrained_graph.pb --label=tf_files/retrained_labels.txt"
+        # return "<img src='static/public/"+filename+"' border='0'>"
+        command = "cd tensorflow-for-poets-2 && python -m scripts.label_image --graph=tf_files/retrained_graph.pb --image="+fullpath+"/"+filename
         try:
             result_success = subprocess.check_output([command], shell=True)
         except subprocess.CalledProcessError as e:
@@ -32,6 +36,20 @@ def auth():
     else:
         return "error occured"
 
+@app.route('/verify', methods=['GET','POST'])
+def verify():
+    if request.method == 'POST':
+        files = request.files.getlist("files[]")
+        for file in files:
+            entity_name = "testing"
+            filename = secure_filename(file.filename)
+            fullpath = os.path.dirname(os.path.realpath(__file__)) + '/static/public/' + entity_name
+            if not os.path.exists(fullpath):
+                os.makedirs(fullpath)
+                file.save(os.path.join(fullpath, filename))
+            else:
+                file.save(os.path.join(fullpath, filename))
+        return "Hello world"
 
 @app.errorhandler(500)
 def internal_error(error):

@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<!--
+/*
+ * jQuery File Upload Plugin Basic Plus Demo
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * https://opensource.org/licenses/MIT
+ */
+-->
+<html lang="en">
+<head>
+<!-- Force latest IE rendering engine or ChromeFrame if installed -->
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
+<meta charset="utf-8">
+<title>jQuery File Upload Demo - Basic Plus version</title>
+<meta name="description" content="File Upload widget with multiple file selection, drag&amp;drop support, progress bar, validation and preview images, audio and video for jQuery. Supports cross-domain, chunked and resumable file uploads. Works with any server-side platform (Google App Engine, PHP, Python, Ruby on Rails, Java, etc.) that supports standard HTML form file uploads.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap styles -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- Generic page styles -->
+<link rel="stylesheet" href="/static/plugin/css/style.css">
+<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+<link rel="stylesheet" href="/static/plugin/css/jquery.fileupload.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Train your model</h1>
+   
+    <blockquote>
+        <p>File Upload widget with multiple file selection, drag&amp;drop support, progress bar, validation and preview images, audio and video for jQuery.<br>
+        Supports cross-domain, chunked and resumable file uploads and client-side image resizing.<br>
+        Works with any server-side platform (PHP, Python, Ruby on Rails, Java, Node.js, Go etc.) that supports standard HTML form file uploads.</p>
+    </blockquote>
+    <br>
+    <form method="post" enctype="multipart/form-data" action="/verify" id="ajax">
+    <!-- The fileinput-button span is used to style the file input field as button -->
+ 
+    <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Add files...</span>
+        <!-- The file input field used as target for the file upload widget -->
+        <input id="fileupload" type="file" name="files[]" multiple>
+    </span>
+</form>
+    <br>
+    <br>
+    <!-- The global progress bar -->
+    <div id="progress" class="progress">
+        <div class="progress-bar progress-bar-success"></div>
+    </div>
+    <!-- The container for the uploaded files -->
+    <div id="files" class="files">preview here</div>
+    <br>
+    <script src="{{ url_for('static', filename='plugin/jquery.1.11.js')}}"></script>
+    <script src="{{ url_for('static', filename='plugin/jquery.form.js')}}"></script>
+    <script>
+      $(function() {
+        // $('#click-upload').click(function(){
+        //   $('#file').click();
+        // });
+        $('#fileupload').change(function(e) {
+          $('#preview').html('<center><br><img src="static/images/loading_transparent.gif" border="0"><p>please wait...</p></center>')
+          $('#ajax').ajaxForm({
+           target: '#files'
+          }).submit();
+        })
+      })
+    </script>
+</body>
+</html>
