@@ -37,10 +37,14 @@
         Works with any server-side platform (PHP, Python, Ruby on Rails, Java, Node.js, Go etc.) that supports standard HTML form file uploads.</p>
     </blockquote>
     <br>
-    <form method="post" enctype="multipart/form-data" action="/verify" id="ajax">
+    <label> Identify Name </label>
+    <input type="text" id="idenitfy-name" >
+    <button class="btn btn-success btn-sm" id="add-identify">Submit</button>
+    <br><br/>
+    <form method="post" enctype="multipart/form-data" id="ajax">
     <!-- The fileinput-button span is used to style the file input field as button -->
- 
-    <span class="btn btn-success fileinput-button">
+      
+    <span class="btn btn-success fileinput-button" disabled id="add-file-upload">
         <i class="glyphicon glyphicon-plus"></i>
         <span>Add files...</span>
         <!-- The file input field used as target for the file upload widget -->
@@ -56,6 +60,8 @@
     <!-- The container for the uploaded files -->
     <div id="files" class="files">preview here</div>
     <br>
+    <button class="btn btn-lg btn-success" id="train">Train Images</button>
+    <br/>
     <script src="{{ url_for('static', filename='plugin/jquery.1.11.js')}}"></script>
     <script src="{{ url_for('static', filename='plugin/jquery.form.js')}}"></script>
     <script>
@@ -66,9 +72,56 @@
         $('#fileupload').change(function(e) {
           $('#preview').html('<center><br><img src="static/images/loading_transparent.gif" border="0"><p>please wait...</p></center>')
           $('#ajax').ajaxForm({
-           target: '#files'
+           target: '#files',
+           success: function(response) {
+             if (response == 'success') {
+               $('#files').html('<h3 style="color: green">Pictures uploaded successfully !</h3>')
+             } else {
+               $('#files').html('<h3 style="color: orange">Error Occured</h3>');
+             }
+           }
           }).submit();
         })
+
+        $('#add-identify').click(function() {
+          const idenitfy_name = $('#idenitfy-name');
+          if (idenitfy_name.val() == '') {
+            idenitfy_name.focus();
+            return false;
+          } else if (!idenitfy_name.val().match(/^[a-zA-Z]+$/)) {
+            alert("Identifier must be string only !");
+            idenitfy_name.focus();
+            return false;
+          } else {
+            $.ajax({
+              url: '/add',
+              method: 'POST',
+              data: { name : idenitfy_name.val()}
+            }).then(function(resp) {
+                $('#ajax').attr('action', `/verify?fd=${idenitfy_name.val()}`);
+                $('#add-file-upload').removeAttr('disabled');
+            })
+          }
+        });
+
+        $('#train').on('click', function() {
+          const folder_name = $('#idenitfy-name');
+          if (folder_name.val() == '') {
+            alert("folder name must not be empty");
+            return false;
+          } else {
+            $('#files').html('<img src="/static/images/loading_transparent.gif"/>')
+
+            $.ajax({
+              url: '/train-engine',
+              method: 'POST',
+              data: { folder_name: folder_name.val()}
+            }).then(function(response) {
+              $('#files').html(response)
+              console.log(response);
+            })
+          }
+        });
       })
     </script>
 </body>
